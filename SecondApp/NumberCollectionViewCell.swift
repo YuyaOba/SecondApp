@@ -14,7 +14,7 @@ class NumberCollectionViewCell: UICollectionViewCell {
         let caluculatelabel = UILabel()
         caluculatelabel.textColor = .white
         caluculatelabel.textAlignment = .center
-        caluculatelabel.font = .boldSystemFont(ofSize: 32)
+        caluculatelabel.font = .boldSystemFont(ofSize: 20)
         caluculatelabel.clipsToBounds = true
         caluculatelabel.backgroundColor = .orange
         caluculatelabel.text = "1"
@@ -27,10 +27,6 @@ class NumberCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview(numberLabel)
         
-        //こうするとnumberLabelのdelegateはHeaderViewになる？
-        numberLabel.frame.size = self.frame.size
-        numberLabel.layer.cornerRadius = self.frame.height / 2
-        backgroundColor = #colorLiteral(red: 0.3334301114, green: 0.5601548553, blue: 0.6772332788, alpha: 1)
         
     }
     
