@@ -12,19 +12,33 @@ class ViewController: UIViewController {
     
     private let cellID = "cellID"
     
+    let numberLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "ここに値が表示されるぉ"
+        label.frame = CGRect(x: 80, y: 110, width:250, height: 40)
+
+
+        return label
+    }()
+    
     let textField: UITextField = {
         let textfield = UITextField()
-    
-    textfield.frame = CGRect(x: 90, y: 100, width:250, height: 40)
-    textfield.placeholder = "入力してください。"
-    // キーボードタイプを指定
-    textfield.keyboardType = UIKeyboardType.numberPad
-    // 枠線のスタイルを設定
-    textfield.borderStyle = .roundedRect
-    // テキストを全消去するボタンを表示
-    textfield.clearButtonMode = .always
-    
-    return textfield
+        
+        let userDefaults = UserDefaults()
+        userDefaults.register(defaults: ["DataStore": "default"])
+        
+        textfield.frame = CGRect(x: 80, y: 70, width:250, height: 40)
+        textfield.placeholder = "入力してください。"
+        // キーボードタイプを指定
+        textfield.keyboardType = UIKeyboardType.default
+        // 枠線のスタイルを設定
+        textfield.borderStyle = .roundedRect
+        // テキストを全消去するボタンを表示
+        textfield.clearButtonMode = .always
+        
+        
+        return textfield
     }()
     
     let discountCollectionView: UICollectionView = {
@@ -47,6 +61,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(textField)
         view.addSubview(discountCollectionView)
+        view.addSubview(numberLabel)
         
        discountCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         discountCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -59,13 +74,27 @@ class ViewController: UIViewController {
         discountCollectionView.dataSource = self
         
         textField.delegate = self
+        
        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // キーボードを閉じる
+        textField.resignFirstResponder()
+        numberLabel.text = textField.text
+        return true
     }
 }
 
 extension ViewController: UITextFieldDelegate {
     
 }
+
+
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
