@@ -12,6 +12,10 @@ class ViewController: UIViewController {
     
     private let cellID = "cellID"
     
+    //配列Int型と指定した上で、値を代入してあげる
+    let numberCell: [[Double]] = [[0.3,0.5,0.1,1.0,1.5,1.6],[0.3,0.5,0.1,1.0,1.5,1.6]]
+    
+    
     let numberLabel: UILabel = {
         let label = UILabel()
 
@@ -99,8 +103,18 @@ extension ViewController: UITextFieldDelegate {
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return numberCell[section].count
     }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return numberCell.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! NumberCollectionViewCell
@@ -110,7 +124,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("tap")
+        let number = numberCell[indexPath.section][indexPath.row]
+        print(number)
     }
     
     
