@@ -18,13 +18,24 @@ class ViewController: UIViewController {
     
     let numberLabel: UILabel = {
         let label = UILabel()
-
-        label.text = "ここに値が表示されるぉ"
+        
+        label.text = "numberLabel.text"
         label.frame = CGRect(x: 80, y: 110, width:250, height: 40)
-
-
+        
+        
         return label
     }()
+    
+//    let toolBar:UIToolbar = {
+//        let bar = UIToolbar()
+//
+//        bar.frame = CGRect(x: 0, y: 0, width: 320, height: 40)
+//        bar.sizeToFit()
+//
+//
+//        return bar
+//    }()
+    
     
     let textField: UITextField = {
         let textfield = UITextField()
@@ -33,9 +44,9 @@ class ViewController: UIViewController {
         userDefaults.register(defaults: ["DataStore": "default"])
         
         textfield.frame = CGRect(x: 80, y: 70, width:250, height: 40)
-        textfield.placeholder = "入力してください。"
+        textfield.placeholder = "textField.text"
         // キーボードタイプを指定
-        textfield.keyboardType = UIKeyboardType.default
+        textfield.keyboardType = UIKeyboardType.numberPad
         // 枠線のスタイルを設定
         textfield.borderStyle = .roundedRect
         // テキストを全消去するボタンを表示
@@ -45,6 +56,14 @@ class ViewController: UIViewController {
         return textfield
     }()
     
+//    let numberToolbar: UIToolbar = {
+//        let bar = UIToolbar()
+//
+//        return bar
+//    }()
+    
+    
+    
     let discountCollectionView: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -53,23 +72,22 @@ class ViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(NumberCollectionViewCell.self, forCellWithReuseIdentifier: "cellID")
-     
+        
         return cv
     }()
     
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         view.backgroundColor = .white
         view.addSubview(textField)
         view.addSubview(discountCollectionView)
         view.addSubview(numberLabel)
         
-       discountCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+        discountCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         discountCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-       discountCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        discountCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         discountCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         discountCollectionView.contentInsetAdjustmentBehavior = .never
         discountCollectionView.backgroundColor = .red
@@ -79,23 +97,60 @@ class ViewController: UIViewController {
         
         textField.delegate = self
         
-       
+        setHideKeyboardTapped()
+        
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // キーボードを閉じる
+        //textFieldの値保存して、Labelに表記する
         textField.resignFirstResponder()
-        numberLabel.text = textField.text
+        
+        
+        guard let number = textField.text else {
+            print("nullでした")
+            return false
+        }
+        print(number)
+        numberLabel.text = number
+        
+        
+//
+//        if let number = textField.text {
+//            print(number)
+//        } else {
+//          print("nullでした")
+//        }
+        
+        
+//        print(numberLabel.text ?? 0)
+        
+        
         return true
     }
 }
 
-extension ViewController: UITextFieldDelegate {
-    
+
+//numberLabelを入力して完了して隠す関数
+extension UIViewController {
+    func setHideKeyboardTapped() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.hideKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+
+
+extension ViewController: UITextFieldDelegate,UIGestureRecognizerDelegate{
+    //他の画面をタップすると閉じるはずが閉じない？
+    func tapScreen(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
 }
 
 
